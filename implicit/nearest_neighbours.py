@@ -24,7 +24,10 @@ class ItemItemRecommender(RecommenderBase):
         """ returns the best N recommendations for a user given its id"""
         # recalculate_user is ignored because this is not a model based algorithm
         liked_vector = user_items[userid]
+        return self.recommend_from_liked(liked_vector, N=N, filter_items=filter_items)
 
+    def recommend_from_liked(self, liked_vector, N=10, filter_items=None):
+        """ returns the best N recommendations for a given the vector of liked items """
         # calculate the top related items
         recommendations = liked_vector.dot(self.similarity)
         best = sorted(zip(recommendations.indices, recommendations.data), key=lambda x: -x[1])
